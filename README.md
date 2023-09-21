@@ -34,6 +34,7 @@ f(1, 2, 3,
 # right:
 f(1, 2, 3, 4, 5, 6, 7, 8, 9)
 
+
 # wrong:
 some_var = foo(1,
                a=3,
@@ -41,6 +42,17 @@ some_var = foo(1,
 
 # right:
 some_var = foo(1, a=3, b=42)
+
+
+# wrong:
+def f(a: int, b: int) -> int:
+    return f1(a,
+              b,
+              a + b)
+
+# right:
+def f(a: int, b: int) -> int:
+    return f1(a, b, a + b)
 ```
 
 * Function definitions
@@ -54,6 +66,7 @@ def f(a,
 # right:
 def f(a, b, c):
     return a + b * c
+
 
 # wrong
 def f2(

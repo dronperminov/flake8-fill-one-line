@@ -35,7 +35,7 @@ class TestFillOneLine(unittest.TestCase):
         self.assertIn(f'2:1 {IMPORT_MSG} (20 <= 160)', result)
         self.assertIn(f'4:1 {IMPORT_MSG} (16 <= 160)', result)
         self.assertIn(f'6:1 {IMPORT_MSG} (71 <= 160)', result)
-        self.assertIn(f'12:5 {IMPORT_MSG} (30 <= 160)', result)
+        self.assertIn(f'17:5 {IMPORT_MSG} (30 <= 160)', result)
 
     def test_calls(self):
         result = self.file_results("calls.py")
