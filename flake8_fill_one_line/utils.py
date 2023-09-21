@@ -2,7 +2,7 @@ import ast
 from typing import List, Optional
 
 
-def is_one_line(node) -> bool:
+def is_one_line(node: ast.AST) -> bool:
     return node.lineno == node.end_lineno
 
 

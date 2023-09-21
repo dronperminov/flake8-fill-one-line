@@ -40,7 +40,7 @@ class Visitor(ast.NodeVisitor):
         self.__check_def(node)
         self.generic_visit(node)
 
-    def __visit_expression(self, node: Union[ast.Expr, ast.Assign, ast.AugAssign, ast.Return], message: str):
+    def __visit_expression(self, node: Union[ast.Expr, ast.Assign, ast.AugAssign, ast.Return], message: str) -> None:
         if isinstance(node.value, ast.Call):
             self.__check_call(node.value, node.lineno, node.col_offset, message)
 
