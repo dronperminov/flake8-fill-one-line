@@ -3,13 +3,15 @@ A Flake8 plugin to ensure an expression can be written in one line without excee
 
 ## Reported errors
 
-* `FOL001`: a function call can be written in one line
-* `FOL002`: an assignment can be written in one line
-* `FOL003`: a function definition can be written in one line
-* `FOL004`: an import can be written in one line
+* `FOL001`: `import` statement can be written in one line"
+* `FOL002`: function call can be written in one line
+* `FOL003`: assignment can be written in one line
+* `FOL004`: `return` statement can be written in one line
+* `FOL005`: function definition can be written in one line
 
 ## Examples
 
+* Imports:
 ```python
 # wrong: 
 import sys, \
@@ -21,17 +23,47 @@ from random import randint as rand_int, \
 # right: 
 import sys, argparse
 from random import randint as rand_int, sample, choice as random_choice
+```
 
-
+* Calls and assignments
+```python
 # wrong:
 f(1, 2, 3,
   4, 5, 6, 7,
   8, 9)
-some_var = foo(1,
-             a=3,
-             b=42)
-
 # right:
 f(1, 2, 3, 4, 5, 6, 7, 8, 9)
+
+# wrong:
+some_var = foo(1,
+               a=3,
+               b=42)
+
+# right:
 some_var = foo(1, a=3, b=42)
+```
+
+* Function definitions
+```python
+# wrong
+def f(a,
+      b,
+      c):
+    return a + b * c
+
+# right:
+def f(a, b, c):
+    return a + b * c
+
+# wrong
+def f2(
+        a: str,
+        b: tuple, *some_args,
+        **kwargs_name
+       ) -> str:
+    pass
+
+# right:
+def f2(a: str, b: tuple, *some_args, **kwargs_name) -> str:
+    pass
 ```

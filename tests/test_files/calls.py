@@ -39,3 +39,15 @@ some_veeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
 function_name(first_argument=some_identifier, second_argument=some_another_identifier, third_argument="some string value in one line",
               fourth_argument=12 + math.sqrt(some_square_variable)
 )
+
+f(a=1,
+  b=f(a=1, b=2),
+  c=5,
+  *[1, 2, 3, 4],
+  **{"a": 1, "b": 2})
+
+
+def f(a: int, b: int) -> int:
+    return f1(a,
+              b,
+              a + b)

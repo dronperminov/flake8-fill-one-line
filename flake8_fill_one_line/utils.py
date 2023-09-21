@@ -10,12 +10,12 @@ def get_keyword_length(keyword: ast.keyword) -> Optional[int]:
     if not is_one_line(keyword.value):
         return None
 
-    if keyword.arg is None:  # kwarg
-        raise NotImplementedError("kwargs not implemented")
-
-    name_length = len(keyword.arg)
     value_length = keyword.value.end_col_offset - keyword.value.col_offset
-    return name_length + 1 + value_length
+
+    if keyword.arg is None:
+        return value_length + 2  # kwarg
+
+    return len(keyword.arg) + 1 + value_length
 
 
 def get_call_length(node: ast.Call) -> Optional[int]:
@@ -75,7 +75,7 @@ def get_def_length(node: ast.FunctionDef) -> Optional[int]:
 
 
 def get_import_names_length(names: List[ast.alias]) -> int:
-    length = 0
+    length = (len(names) - 1) * 2
 
     for name in names:
         length += len(name.name)
@@ -88,13 +88,11 @@ def get_import_names_length(names: List[ast.alias]) -> int:
 
 def get_import_length(node: ast.Import) -> int:
     length = len("import ")
-    length += (len(node.names) - 1) * 2
     length += get_import_names_length(node.names)
     return length
 
 
 def get_import_from_length(node: ast.ImportFrom) -> int:
     length = node.col_offset + len(f"from {node.module} import ")
-    length += (len(node.names) - 1) * 2
     length += get_import_names_length(node.names)
     return length

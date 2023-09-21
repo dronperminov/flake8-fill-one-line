@@ -3,7 +3,7 @@ import os
 import unittest
 from typing import Set
 
-from flake8_fill_one_line.check import FillOneLineChecker, CALL_MSG, ASSIGN_MSG, DEF_MSG, IMPORT_MSG
+from flake8_fill_one_line.check import ASSIGN_MSG, CALL_MSG, DEF_MSG, FillOneLineChecker, IMPORT_MSG, RETURN_MSG
 
 
 class TestFillOneLine(unittest.TestCase):
@@ -19,22 +19,35 @@ class TestFillOneLine(unittest.TestCase):
 
     def test_no_breaks(self):
         self.assertEqual(self.code_results(""), set())
+        self.assertEqual(self.code_results('import a, b, c, d'), set())
+        self.assertEqual(self.code_results('from module import a, b, c, d'), set())
         self.assertEqual(self.code_results('f()'), set())
         self.assertEqual(self.code_results('f(1, 2, 3, 4)'), set())
         self.assertEqual(self.code_results('f(1, 2, a=3, foo_baz=4)'), set())
         self.assertEqual(self.code_results('a = f(1, 2, 3)'), set())
         self.assertEqual(self.code_results('def f(a, b): pass'), set())
-        self.assertEqual(self.code_results('def f(a, b):\n    pass'), set())
+        self.assertEqual(self.code_results('def f(a: int, b: int = 7) -> int:\n    pass'), set())
+
+    def test_imports(self):
+        result = self.file_results("imports.py")
+
+        self.assertEqual(len(result), 4)
+        self.assertIn(f'2:1 {IMPORT_MSG} (20 <= 160)', result)
+        self.assertIn(f'4:1 {IMPORT_MSG} (16 <= 160)', result)
+        self.assertIn(f'6:1 {IMPORT_MSG} (71 <= 160)', result)
+        self.assertIn(f'12:5 {IMPORT_MSG} (30 <= 160)', result)
 
     def test_calls(self):
         result = self.file_results("calls.py")
 
-        self.assertEqual(len(result), 5)
+        self.assertEqual(len(result), 7)
         self.assertIn(f'2:1 {CALL_MSG} (28 <= 160)', result)
         self.assertIn(f'7:1 {CALL_MSG} (84 <= 160)', result)
         self.assertIn(f'14:9 {CALL_MSG} (18 <= 160)', result)
         self.assertIn(f'19:1 {ASSIGN_MSG} (28 <= 160)', result)
         self.assertIn(f'32:1 {ASSIGN_MSG} (45 <= 160)', result)
+        self.assertIn(f'43:1 {CALL_MSG} (61 <= 160)', result)
+        self.assertIn(f'51:5 {RETURN_MSG} (26 <= 160)', result)
 
     def test_definitions(self):
         result = self.file_results("definitions.py")
@@ -47,12 +60,3 @@ class TestFillOneLine(unittest.TestCase):
         self.assertIn(f'28:1 {DEF_MSG} (42 <= 160)', result)
         self.assertIn(f'35:5 {DEF_MSG} (47 <= 160)', result)
         self.assertIn(f'41:5 {DEF_MSG} (49 <= 160)', result)
-
-    def test_imports(self):
-        result = self.file_results("imports.py")
-
-        self.assertEquals(len(result), 4)
-        self.assertIn(f'2:1 {IMPORT_MSG} (20 <= 160)', result)
-        self.assertIn(f'4:1 {IMPORT_MSG} (16 <= 160)', result)
-        self.assertIn(f'6:1 {IMPORT_MSG} (71 <= 160)', result)
-        self.assertIn(f'12:5 {IMPORT_MSG} (30 <= 160)', result)
