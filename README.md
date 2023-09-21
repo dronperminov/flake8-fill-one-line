@@ -1,5 +1,5 @@
 # flake8-fill-one-line
-A Flake8 plugin to ensure an expression can be written in one line without exceeding the maximum length (`160` characters by default)
+A Flake8 plugin to ensure an expression can be written in one line without exceeding the maximum length (`160` characters by default) limit.
 
 ## Reported errors
 

@@ -13,7 +13,7 @@ class TestFillOneLine(unittest.TestCase):
         return {f"{line}:{col + 1} {msg}" for line, col, msg, _ in plugin.run()}
 
     def file_results(self, filename: str, max_line_length: int = 160) -> Set[str]:
-        path = os.path.abspath(os.path.join(os.path.dirname(__file__), "test_files", filename))
+        path = os.path.abspath(os.path.join(os.path.dirname(__file__), "check_files", filename))
         with open(path, "r", encoding="utf-8") as f:
             return self.code_results(f.read(), max_line_length=max_line_length)
 
