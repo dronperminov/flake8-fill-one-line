@@ -1,4 +1,4 @@
-from typing import Dict, Tuple
+from typing import Dict, List, Optional, Tuple
 
 
 def f(a,
@@ -44,3 +44,17 @@ class B:
           arg1: bool,
           arg2: bool):
         return a + b - c * d / e ^ (arg1 and arg2)
+
+    def _parse_document(self, path: str, parameters: dict, another_field: Optional[str], some_arg_two: Optional[str]) -> Tuple[List[int],
+                                                                                                                               List[dict],
+                                                                                                                               List[float],
+                                                                                                                               List[str],
+                                                                                                                               Optional[dict]]:
+        first_page = 0 if parameters["first_page"] is None or parameters["first_page"] < 0 else parameters["first_page"]
+        return [], [], [], [], None
+
+    def _parse_document2(self, path: str, parameters: dict) -> Tuple[List[int], List[dict],
+                                                                    List[float], List[str],
+                                                                    Optional[dict]]:
+        first_page = 0 if parameters["first_page"] is None or parameters["first_page"] < 0 else parameters["first_page"]
+        return [], [], [], [], None

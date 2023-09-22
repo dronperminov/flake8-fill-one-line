@@ -4,6 +4,7 @@ import unittest
 from typing import Set
 
 from flake8_fill_one_line.check import ASSIGN_MSG, CALL_MSG, DEF_MSG, FillOneLineChecker, IMPORT_MSG, RETURN_MSG
+from flake8_fill_one_line.utils import fix_tuple
 
 
 class TestFillOneLine(unittest.TestCase):
@@ -53,7 +54,7 @@ class TestFillOneLine(unittest.TestCase):
     def test_definitions(self) -> None:
         result = self.file_results("definitions.py")
 
-        self.assertEqual(len(result), 7)
+        self.assertEqual(len(result), 8)
         self.assertIn(f"4:1 {DEF_MSG} (15 <= 160)", result)
         self.assertIn(f"10:1 {DEF_MSG} (42 <= 160)", result)
         self.assertIn(f"17:1 {DEF_MSG} (81 <= 160)", result)
@@ -61,3 +62,11 @@ class TestFillOneLine(unittest.TestCase):
         self.assertIn(f"28:1 {DEF_MSG} (42 <= 160)", result)
         self.assertIn(f"35:5 {DEF_MSG} (47 <= 160)", result)
         self.assertIn(f"41:5 {DEF_MSG} (49 <= 160)", result)
+        self.assertIn(f"56:5 {DEF_MSG} (132 <= 160)", result)
+
+    def test_utils(self) -> None:
+        self.assertEqual(fix_tuple("Tuple[(int, int)]"), "Tuple[int, int]")
+        self.assertEqual(fix_tuple("Tuple[(int, Tuple[int])]"), "Tuple[int, Tuple[int]]")
+        self.assertEqual(fix_tuple("Tuple[(int, Tuple[(int, str, float)])]"), "Tuple[int, Tuple[int, str, float]]")
+        self.assertEqual(fix_tuple("List[List[Tuple[(int, int, int)]]]"), "List[List[Tuple[int, int, int]]]")
+        self.assertEqual(fix_tuple("Tuple[(Tuple[(int, int)], Tuple[(float, int, str)], int)]"), "Tuple[Tuple[int, int], Tuple[float, int, str], int]")

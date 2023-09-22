@@ -11,6 +11,14 @@ A Flake8 plugin to ensure an expression can be written in one line without excee
 | `FOL004` | `return` statement can be written in one line  |
 | `FOL005` | function definition can be written in one line |
 
+
+## Used options
+
+* `max_line_length` - option from Flake8, length limit for line 
+* `skip-std-names` - ignore `tuple()`, `list()`, `set()`, `dict()` calls (used by default)
+* `skip-multiline-arguments` - ignore function calls with arguments on multiple lines (used by default)
+
+
 ## Examples
 
 * Imports:
@@ -33,6 +41,7 @@ from random import randint as rand_int, sample, choice as random_choice
 f(1, 2, 3,
   4, 5, 6, 7,
   8, 9)
+
 # right:
 f(1, 2, 3, 4, 5, 6, 7, 8, 9)
 
