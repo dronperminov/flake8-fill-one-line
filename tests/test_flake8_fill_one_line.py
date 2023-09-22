@@ -7,15 +7,15 @@ from flake8_fill_one_line.check import ASSIGN_MSG, CALL_MSG, DEF_MSG, FillOneLin
 
 
 class TestFillOneLine(unittest.TestCase):
-    def code_results(self, code: str, max_line_length: int = 160) -> Set[str]:
+    def code_results(self, code: str) -> Set[str]:
         tree = ast.parse(code)
-        plugin = FillOneLineChecker(tree, max_line_length)
+        plugin = FillOneLineChecker(tree)
         return {f"{line}:{col + 1} {msg}" for line, col, msg, _ in plugin.run()}
 
-    def file_results(self, filename: str, max_line_length: int = 160) -> Set[str]:
+    def file_results(self, filename: str) -> Set[str]:
         path = os.path.abspath(os.path.join(os.path.dirname(__file__), "check_files", filename))
         with open(path, "r", encoding="utf-8") as f:
-            return self.code_results(f.read(), max_line_length=max_line_length)
+            return self.code_results(f.read())
 
     def test_no_breaks(self) -> None:
         self.assertEqual(self.code_results(""), set())

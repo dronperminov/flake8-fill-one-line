@@ -28,4 +28,4 @@ jobs:
         flake8 .
     - name: Run tests
       run: |
-        python3 -m unittest -v -f tests/test_*.py
+        python3 -m unittest -v -f tests/test_*

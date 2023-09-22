@@ -4,12 +4,13 @@ max-line-length = 160
 max-complexity = 10
 inline-quotes = "
 
-application-import-names = flake8-fill-one-lines
+application-import-names = flake8_fill_one_lines.utils
 import-order-style = pycharm
 
 
 exclude = .git, __pycache__, .idea, venv, tests/check_files
 
 # ANN101 - type annotations for self
+# ANN102 - type annotations for cls
 # N802 - function name should be lowercase
-ignore = ANN101, N802
+ignore = ANN101, ANN102, N802

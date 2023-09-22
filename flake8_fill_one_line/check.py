@@ -1,7 +1,10 @@
 import ast
+from argparse import Namespace
 from typing import Any, Generator, List, Tuple, Type, Union
 
-from flake8_fill_one_line.utils import get_call_length, get_def_length, get_import_from_length, get_import_length, is_one_line
+from flake8.options.manager import OptionManager
+
+from .utils import get_call_length, get_def_length, get_import_from_length, get_import_length, is_one_line
 
 IMPORT_MSG = "FOL001 Import statement can be written in one line"
 CALL_MSG = "FOL002 Function call can be written in one line"
@@ -86,9 +89,11 @@ class FillOneLineChecker:
     name = "flake8-fill-one-line"
     version = "0.1.0"
 
-    def __init__(self, tree: ast.AST, max_line_length: int) -> None:
+    max_line_length = 160
+    skip_std_names = True
+
+    def __init__(self, tree: ast.AST) -> None:
         self._tree = tree
-        self.max_line_length = max_line_length
 
     def run(self) -> Generator[Tuple[int, int, str, Type[Any]], None, None]:
         visitor = Visitor(max_line_length=self.max_line_length)
@@ -96,3 +101,12 @@ class FillOneLineChecker:
 
         for line, col, message in visitor.problems:
             yield line, col, message, type(self)
+
+    @classmethod
+    def add_options(cls, option_manager: OptionManager) -> None:
+        option_manager.add_option("--skip-std-names", action="store_true", default=True, parse_from_config=True)
+
+    @classmethod
+    def parse_options(cls, options: Namespace) -> None:
+        cls.max_line_length = options.max_line_length
+        cls.skip_std_names = options.skip_std_names
