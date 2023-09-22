@@ -4,7 +4,10 @@ from typing import Any, Generator, List, Tuple, Type, Union
 
 from flake8.options.manager import OptionManager
 
-from .utils import get_call_length, get_def_length, get_import_from_length, get_import_length, is_one_line
+from .call_analyzer import CallAnalyzer
+from .def_analyzer import DefAnalyzer
+from .import_analyzer import ImportAnalyzer
+from .utils import is_one_line
 
 IMPORT_MSG = "FOL001 Import statement can be written in one line"
 CALL_MSG = "FOL002 Function call can be written in one line"
@@ -53,31 +56,32 @@ class Visitor(ast.NodeVisitor):
         if is_one_line(node):
             return
 
-        import_length = get_import_length(node)
-        if import_length <= self.max_line_length:
-            self.problems.append((node.lineno, node.col_offset, f"{IMPORT_MSG} ({import_length} <= {self.max_line_length})"))
+        import_analyzer = ImportAnalyzer()
+        length = import_analyzer.get_import_length(node)
+
+        if length <= self.max_line_length:
+            self.problems.append((node.lineno, node.col_offset, f"{IMPORT_MSG} ({length} <= {self.max_line_length})"))
 
     def __check_import_from(self, node: ast.ImportFrom) -> None:
         if is_one_line(node):
             return
 
-        import_length = get_import_from_length(node)
-        if import_length <= self.max_line_length:
-            self.problems.append((node.lineno, node.col_offset, f"{IMPORT_MSG} ({import_length} <= {self.max_line_length})"))
+        import_analyzer = ImportAnalyzer()
+        length = import_analyzer.get_import_from_length(node)
+
+        if length <= self.max_line_length:
+            self.problems.append((node.lineno, node.col_offset, f"{IMPORT_MSG} ({length} <= {self.max_line_length})"))
 
     def __check_call(self, node: ast.Call, lineno: int, col_offset: int, message: str) -> None:
-        if is_one_line(node):
-            return  # skip one line call
-
-        if self.skip_std_names and isinstance(node.func, ast.Name) and node.func.id in {"list", "dict", "set", "tuple"}:
-            return
-
-        call_length = get_call_length(node)
-        if call_length is not None and call_length <= self.max_line_length:
-            self.problems.append((lineno, col_offset, f"{message} ({call_length} <= {self.max_line_length})"))
+        call_analyzer = CallAnalyzer(self.skip_std_names)
+        length = call_analyzer.get_length(node)
+        if length is not None and length <= self.max_line_length:
+            self.problems.append((lineno, col_offset, f"{message} ({length} <= {self.max_line_length})"))
 
     def __check_def(self, node: ast.FunctionDef) -> None:
-        def_length = get_def_length(node)
+        def_analyzer = DefAnalyzer()
+        def_length = def_analyzer.get_length(node)
+
         if def_length is not None and def_length <= self.max_line_length:
             self.problems.append((node.lineno, node.col_offset, f"{DEF_MSG} ({def_length} <= {self.max_line_length})"))
 
