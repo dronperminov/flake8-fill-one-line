@@ -77,11 +77,8 @@ class Visitor(ast.NodeVisitor):
             self.problems.append((lineno, col_offset, f"{message} ({call_length} <= {self.max_line_length})"))
 
     def __check_def(self, node: ast.FunctionDef) -> None:
-        if node.lineno >= node.body[0].lineno - 1:
-            return  # skip one line definition
-
         def_length = get_def_length(node)
-        if def_length <= self.max_line_length:
+        if def_length is not None and def_length <= self.max_line_length:
             self.problems.append((node.lineno, node.col_offset, f"{DEF_MSG} ({def_length} <= {self.max_line_length})"))
 
 

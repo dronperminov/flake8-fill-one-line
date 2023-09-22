@@ -51,3 +51,15 @@ def f(a: int, b: int) -> int:
     return f1(a,
               b,
               a + b)
+
+
+class A:
+    def method(self,
+               a: int,
+               b: int):
+        """
+        :param a:
+        :param b:
+        :return:
+        """
+        return a - b * 3
