@@ -3,11 +3,13 @@ A Flake8 plugin to ensure an expression can be written in one line without excee
 
 ## Reported errors
 
-* `FOL001`: `import` statement can be written in one line
-* `FOL002`: function call can be written in one line
-* `FOL003`: assignment can be written in one line
-* `FOL004`: `return` statement can be written in one line
-* `FOL005`: function definition can be written in one line
+|   Code   | Rule                                           |
+| -------- |------------------------------------------------|
+| `FOL001` | `import` statement can be written in one line  |
+| `FOL002` | function call can be written in one line       |
+| `FOL003` | assignment can be written in one line          |
+| `FOL004` | `return` statement can be written in one line  |
+| `FOL005` | function definition can be written in one line |
 
 ## Examples
 
