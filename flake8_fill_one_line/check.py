@@ -7,6 +7,7 @@ from flake8.options.manager import OptionManager
 from flake8_fill_one_line import __version__
 from flake8_fill_one_line.analyzers.call_analyzer import CallAnalyzer
 from flake8_fill_one_line.analyzers.def_analyzer import DefAnalyzer
+from flake8_fill_one_line.analyzers.if_analyzer import IfAnalyzer
 from flake8_fill_one_line.analyzers.if_exp_analyzer import IfExpAnalyzer
 from flake8_fill_one_line.analyzers.import_analyzer import ImportAnalyzer
 from flake8_fill_one_line.analyzers.with_analyzer import WithAnalyzer
@@ -18,6 +19,7 @@ ASSIGN_MSG = "FOL003 Assignment can be written in one line"
 RETURN_MSG = "FOL004 Return statement can be written in one line"
 DEF_MSG = "FOL005 Function definition can be written in one line"
 WITH_MSG = "FOL006 With statement can be written in one line"
+IF_MSG = "FOL007 If statement can be written in one line"
 
 
 class Visitor(ast.NodeVisitor):
@@ -53,6 +55,10 @@ class Visitor(ast.NodeVisitor):
 
     def visit_With(self, node: ast.With) -> None:
         self.__check_with(node)
+        self.generic_visit(node)
+
+    def visit_If(self, node: ast.If) -> None:
+        self.__check_if(node)
         self.generic_visit(node)
 
     def __visit_expression(self, node: Union[ast.Expr, ast.Assign, ast.AugAssign, ast.Return], message: str) -> None:
@@ -108,6 +114,13 @@ class Visitor(ast.NodeVisitor):
 
         if length is not None and length <= self.max_line_length:
             self.problems.append((node.lineno, node.col_offset, f"{WITH_MSG} ({length} <= {self.max_line_length})"))
+
+    def __check_if(self, node: ast.If) -> None:
+        if_analyzer = IfAnalyzer()
+        length = if_analyzer.get_length(node)
+
+        if length is not None and length <= self.max_line_length:
+            self.problems.append((node.lineno, node.col_offset, f"{IF_MSG}"))
 
 
 class FillOneLineChecker:

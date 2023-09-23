@@ -25,6 +25,7 @@ FOL003 assignment can be written in one line
 FOL004 ``return`` statement can be written in one line
 FOL005 function definition can be written in one line
 FOL006 ``with`` statement can be written in one line
+FOL007 ``if`` statement can be written in one line
 ====== ====
 
 Used options
@@ -145,3 +146,56 @@ Examples
     # right:
     with open("f1.txt") as f1, open("f2.txt", "w") as f2:
         f2.write(f1.read())
+
+* If statements
+
+.. code-block:: python
+
+    # wrong:
+    if (
+        a < b and
+        c < d and
+        a + b == c - d
+    ):
+        pass
+
+    # right:
+    if a < b and c < d and a + b == c - d:
+        pass
+
+
+    # wrong:
+    if a < \
+            b:
+        pass
+
+    # right:
+    if a < b:
+        pass
+
+
+    # wrong:
+    for i in range(100):
+        if (i < 5 or
+                i > 10):
+            pass
+        elif i == 2 or \
+            i == 3 or i == 11 \
+                or i == 28:
+            pass
+        elif 47 <= i <= 58:
+            pass
+        elif i * (20 -
+                  i) < 0:
+            pass
+
+    # right:
+    for i in range(100):
+        if i < 5 or i > 10:
+            pass
+        elif i == 2 or i == 3 or i == 11 or i == 28:
+            pass
+        elif 47 <= i <= 58:
+            pass
+        elif i * (20 - i) < 0:
+            pass
