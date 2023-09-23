@@ -1,7 +1,7 @@
 import ast
 from typing import Optional
 
-from .utils import get_node_length, is_one_line
+from flake8_fill_one_line.utils import get_node_length, is_one_line
 
 
 class CallAnalyzer:

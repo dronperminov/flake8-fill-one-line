@@ -4,10 +4,11 @@ from typing import Any, Generator, List, Tuple, Type, Union
 
 from flake8.options.manager import OptionManager
 
-from .call_analyzer import CallAnalyzer
-from .def_analyzer import DefAnalyzer
-from .import_analyzer import ImportAnalyzer
-from .utils import is_one_line
+from flake8_fill_one_line import __version__
+from flake8_fill_one_line.call_analyzer import CallAnalyzer
+from flake8_fill_one_line.def_analyzer import DefAnalyzer
+from flake8_fill_one_line.import_analyzer import ImportAnalyzer
+from flake8_fill_one_line.utils import is_one_line
 
 IMPORT_MSG = "FOL001 Import statement can be written in one line"
 CALL_MSG = "FOL002 Function call can be written in one line"
@@ -89,7 +90,7 @@ class Visitor(ast.NodeVisitor):
 
 class FillOneLineChecker:
     name = "flake8-fill-one-line"
-    version = "0.1.0"
+    version = __version__
 
     max_line_length = 160
     skip_std_names = True
