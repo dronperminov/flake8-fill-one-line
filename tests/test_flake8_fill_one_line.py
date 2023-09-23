@@ -41,7 +41,7 @@ class TestFillOneLine(unittest.TestCase):
     def test_calls(self) -> None:
         result = self.file_results("calls.py")
 
-        self.assertEqual(len(result), 8)
+        self.assertEqual(len(result), 9)
         self.assertIn(f"2:1 {CALL_MSG} (28 <= 160)", result)
         self.assertIn(f"7:1 {CALL_MSG} (84 <= 160)", result)
         self.assertIn(f"14:9 {CALL_MSG} (18 <= 160)", result)
@@ -50,6 +50,7 @@ class TestFillOneLine(unittest.TestCase):
         self.assertIn(f"43:1 {CALL_MSG} (61 <= 160)", result)
         self.assertIn(f"51:5 {RETURN_MSG} (26 <= 160)", result)
         self.assertIn(f"57:5 {DEF_MSG} (37 <= 160)", result)
+        self.assertIn(f"65:9 {RETURN_MSG} (64 <= 160)", result)
 
     def test_definitions(self) -> None:
         result = self.file_results("definitions.py")

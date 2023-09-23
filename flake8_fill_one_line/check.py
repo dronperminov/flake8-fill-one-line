@@ -7,6 +7,7 @@ from flake8.options.manager import OptionManager
 from flake8_fill_one_line import __version__
 from flake8_fill_one_line.analyzers.call_analyzer import CallAnalyzer
 from flake8_fill_one_line.analyzers.def_analyzer import DefAnalyzer
+from flake8_fill_one_line.analyzers.if_exp_analyzer import IfExpAnalyzer
 from flake8_fill_one_line.analyzers.import_analyzer import ImportAnalyzer
 from flake8_fill_one_line.analyzers.with_analyzer import WithAnalyzer
 from flake8_fill_one_line.utils import is_one_line
@@ -57,6 +58,8 @@ class Visitor(ast.NodeVisitor):
     def __visit_expression(self, node: Union[ast.Expr, ast.Assign, ast.AugAssign, ast.Return], message: str) -> None:
         if isinstance(node.value, ast.Call):
             self.__check_call(node.value, node.lineno, node.col_offset, message)
+        elif isinstance(node.value, ast.IfExp):
+            self.__check_if_exp(node.value, node.lineno, node.col_offset, message)
 
         self.generic_visit(node)
 
@@ -83,6 +86,12 @@ class Visitor(ast.NodeVisitor):
     def __check_call(self, node: ast.Call, lineno: int, col_offset: int, message: str) -> None:
         call_analyzer = CallAnalyzer(skip_std_names=self.skip_std_names, skip_multiline_arguments=self.skip_multiline_arguments)
         length = call_analyzer.get_length(node)
+        if length is not None and length <= self.max_line_length:
+            self.problems.append((lineno, col_offset, f"{message} ({length} <= {self.max_line_length})"))
+
+    def __check_if_exp(self, node: ast.IfExp, lineno: int, col_offset: int, message: str) -> None:
+        if_exp_analyzer = IfExpAnalyzer()
+        length = if_exp_analyzer.get_length(node)
         if length is not None and length <= self.max_line_length:
             self.problems.append((lineno, col_offset, f"{message} ({length} <= {self.max_line_length})"))
 

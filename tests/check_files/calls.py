@@ -62,4 +62,6 @@ class A:
         :param b:
         :return:
         """
-        return a - b * 3
+        return a - b * 3 if \
+            b < 4 \
+            else self.method(a - 1, b + 1)

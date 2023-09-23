@@ -53,7 +53,6 @@ Examples
     import sys, argparse
     from random import randint as rand_int, sample, choice as random_choice
 
-
 * Calls and assignments
 
 .. code-block:: python
@@ -85,6 +84,17 @@ Examples
     # right:
     def f(a: int, b: int) -> int:
         return f1(a, b, a + b)
+
+
+    # wrong:
+    def foo(a: int, b: int):
+        return a - b * 3 if \
+            b < 4 \
+            else foo(a - 1, b + 1)
+
+    # right:
+    def foo(a: int, b: int):
+        return a - b * 3 if b < 4 else foo(a - 1, b + 1)
 
 * Function definitions
 
