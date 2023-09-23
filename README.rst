@@ -2,7 +2,16 @@
 flake8-fill-one-line
 ====================
 
-A Flake8 plugin to ensure an expression can be written in one line without exceeding the maximum length (`160` characters by default) limit.
+A Flake8 plugin to ensure an expression can be written in one line without exceeding the maximum length (``160`` characters by default) limit.
+
+Installation
+------------
+
+Install from ``pip`` with:
+
+.. code-block:: bash
+
+    pip install flake8-fill-one-line
 
 Reported errors
 ---------------
@@ -10,19 +19,20 @@ Reported errors
 ====== ====
  Code  Rule
 ====== ====
-FOL001 `import` statement can be written in one line
+FOL001 ``import`` statement can be written in one line
 FOL002 function call can be written in one line
 FOL003 assignment can be written in one line
-FOL004 `return` statement can be written in one line
+FOL004 ``return`` statement can be written in one line
 FOL005 function definition can be written in one line
+FOL006 ``with`` statement can be written in one line
 ====== ====
 
 Used options
 ------------
 
-* `max_line_length` - option from Flake8, length limit for line 
-* `skip-std-names` - ignore `tuple()`, `list()`, `set()`, `dict()` calls (used by default)
-* `skip-multiline-arguments` - ignore function calls with arguments on multiple lines (used by default)
+* ``max_line_length`` - option from Flake8, length limit for line
+* ``skip-std-names`` - ignore ``tuple()``, ``list()``, ``set()``, ``dict()`` calls (used by default)
+* ``skip-multiline-arguments`` - ignore function calls with arguments on multiple lines (used by default)
 
 
 Examples
@@ -102,3 +112,26 @@ Examples
     # right:
     def f2(a: str, b: tuple, *some_args, **kwargs_name) -> str:
         pass
+
+* With statements
+
+.. code-block:: python
+
+    # wrong:
+    with open("some_file.txt") as \
+            f:
+        f.read()
+
+    # right:
+    with open("some_file.txt") as f:
+        f.read()
+
+
+    # wrong:
+    with open("f1.txt") as f1, \
+            open("f2.txt", "w") as f2:
+        f2.write(f1.read())
+
+    # right:
+    with open("f1.txt") as f1, open("f2.txt", "w") as f2:
+        f2.write(f1.read())

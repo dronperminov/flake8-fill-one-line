@@ -3,7 +3,7 @@ import os
 import unittest
 from typing import Set
 
-from flake8_fill_one_line.check import ASSIGN_MSG, CALL_MSG, DEF_MSG, FillOneLineChecker, IMPORT_MSG, RETURN_MSG
+from flake8_fill_one_line.check import ASSIGN_MSG, CALL_MSG, DEF_MSG, FillOneLineChecker, IMPORT_MSG, RETURN_MSG, WITH_MSG
 from flake8_fill_one_line.utils import fix_tuple
 
 
@@ -63,6 +63,13 @@ class TestFillOneLine(unittest.TestCase):
         self.assertIn(f"35:5 {DEF_MSG} (47 <= 160)", result)
         self.assertIn(f"41:5 {DEF_MSG} (49 <= 160)", result)
         self.assertIn(f"56:5 {DEF_MSG} (132 <= 160)", result)
+
+    def test_with_statements(self) -> None:
+        result = self.file_results("with_statements.py")
+
+        self.assertEqual(len(result), 3)
+        self.assertIn(f"7:1 {WITH_MSG} (32 <= 160)", result)
+        self.assertIn(f"11:1 {WITH_MSG} (53 <= 160)", result)
 
     def test_utils(self) -> None:
         self.assertEqual(fix_tuple("Tuple[(int, int)]"), "Tuple[int, int]")
