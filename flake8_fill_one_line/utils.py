@@ -1,15 +1,18 @@
 import ast
 import re
-from typing import Union
+from typing import Optional, Union
 
 import astunparse
 
 
-def is_one_line(node: Union[ast.AST, ast.expr]) -> bool:
-    return node.lineno == node.end_lineno
+def is_one_line(node: Union[ast.AST, ast.expr, ast.keyword]) -> Optional[bool]:
+    if hasattr(node, "lineno") and hasattr(node, "end_lineno"):
+        return node.lineno == node.end_lineno
+
+    return None
 
 
-def get_node_length(node: Union[ast.AST, ast.expr]) -> int:
+def get_node_length(node: Union[ast.AST, ast.expr, ast.keyword]) -> int:
     if is_one_line(node):
         return node.end_col_offset - node.col_offset
 
