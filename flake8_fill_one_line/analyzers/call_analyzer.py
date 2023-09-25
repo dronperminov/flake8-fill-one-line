@@ -25,6 +25,9 @@ class CallAnalyzer:
             args_lengths.append(get_node_length(arg))
 
         for keyword in node.keywords:
+            if not hasattr(keyword, "lineno"):
+                return None
+
             if self.skip_multiline_arguments and not is_one_line(keyword):
                 return None
 
