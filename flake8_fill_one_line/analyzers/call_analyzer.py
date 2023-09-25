@@ -25,7 +25,7 @@ class CallAnalyzer:
             args_lengths.append(get_node_length(arg))
 
         for keyword in node.keywords:
-            if self.skip_multiline_arguments and is_one_line(keyword) is False:
+            if self.skip_multiline_arguments and not is_one_line(keyword):
                 return None
 
             args_lengths.append(get_node_length(keyword))
