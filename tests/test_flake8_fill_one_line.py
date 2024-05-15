@@ -55,7 +55,7 @@ class TestFillOneLine(unittest.TestCase):
     def test_definitions(self) -> None:
         result = self.file_results("definitions.py")
 
-        self.assertEqual(len(result), 8)
+        self.assertEqual(len(result), 11)
         self.assertIn(f"4:1 {DEF_MSG} (15 <= 160)", result)
         self.assertIn(f"10:1 {DEF_MSG} (42 <= 160)", result)
         self.assertIn(f"17:1 {DEF_MSG} (81 <= 160)", result)
@@ -64,6 +64,9 @@ class TestFillOneLine(unittest.TestCase):
         self.assertIn(f"35:5 {DEF_MSG} (47 <= 160)", result)
         self.assertIn(f"41:5 {DEF_MSG} (49 <= 160)", result)
         self.assertIn(f"56:5 {DEF_MSG} (132 <= 160)", result)
+        self.assertIn(f"69:5 {DEF_MSG} (112 <= 160)", result)
+        self.assertIn(f"77:5 {DEF_MSG} (152 <= 160)", result)
+        self.assertIn(f"84:5 {DEF_MSG} (160 <= 160)", result)
 
     def test_with_statements(self) -> None:
         result = self.file_results("with_statements.py")

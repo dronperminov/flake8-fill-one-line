@@ -14,6 +14,13 @@ class DefAnalyzer:
             args_lengths.append(get_node_length(arg))
             end_line = max(end_line, arg.end_lineno)
 
+        if node.args.kwonlyargs:
+            length += 3  # ", *"
+
+        for arg in node.args.kwonlyargs:
+            args_lengths.append(get_node_length(arg))
+            end_line = max(end_line, arg.end_lineno)
+
         if node.args.vararg is not None:
             args_lengths.append(get_node_length(node.args.vararg) + 1)  # *vararg
             end_line = max(end_line, node.args.vararg.end_lineno)
@@ -25,7 +32,14 @@ class DefAnalyzer:
         length += sum(args_lengths) + (len(args_lengths) - 1) * 2
 
         for i, default in enumerate(node.args.defaults):
-            offset = 1 if node.args.args[-(i + 1)].annotation is None else 3
+            offset = 1 if node.args.args[i].annotation is None else 3
+            length += default.end_col_offset - default.col_offset + offset
+
+        for i, default in enumerate(node.args.kw_defaults):
+            if default is None:
+                continue
+
+            offset = 1 if node.args.kwonlyargs[i].annotation is None else 3
             length += default.end_col_offset - default.col_offset + offset
 
         if node.returns is not None:

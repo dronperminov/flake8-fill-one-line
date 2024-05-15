@@ -58,3 +58,39 @@ class B:
                                                                     Optional[dict]]:
         first_page = 0 if parameters["first_page"] is None or parameters["first_page"] < 0 else parameters["first_page"]
         return [], [], [], [], None
+
+
+class C:
+    def __init__(self, *, config: Optional[dict] = None) -> None:
+        self.config = config
+
+
+class D:
+    def __init__(self, *, config: Optional[dict] = None,
+                 a: str,
+                 b: int = 123_456_789,
+                 c="dewfhrihieh") -> None:
+        self.config = config
+        self.a = b
+        self.b = a
+
+    def not_init(self, *, config: Optional[dict] = None,
+                 a: str,
+                 b: int = 123_456_789,
+                 c="dewfhrihieh",
+                 d: str = "dewoifhgroithiowjeirothiwrh") -> None:
+        pass
+
+    def another1(self, *, config: Optional[dict] = None,
+                 a: str,
+                 b: int = 123_456_789,
+                 c="dewfhrihieh",
+                 d: str = "dewoifhgroithiowjeirothiwrh12345678") -> None:
+        pass
+
+    def another2(self, *, config: Optional[dict] = None,
+                 a: str,
+                 b: int = 123_456_789,
+                 c="dewfhrihieh",
+                 d: str = "dewoifhgroithiowjeirothiwrh123456789") -> None:
+        pass
