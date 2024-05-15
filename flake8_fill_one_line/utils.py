@@ -5,11 +5,11 @@ from typing import Union
 import astunparse
 
 
-def is_one_line(node: Union[ast.AST, ast.expr]) -> bool:
+def is_one_line(node: Union[ast.AST, ast.expr, ast.keyword]) -> bool:
     return node.lineno == node.end_lineno
 
 
-def get_node_length(node: Union[ast.AST, ast.expr]) -> int:
+def get_node_length(node: Union[ast.AST, ast.expr, ast.keyword]) -> int:
     if is_one_line(node):
         return node.end_col_offset - node.col_offset
 

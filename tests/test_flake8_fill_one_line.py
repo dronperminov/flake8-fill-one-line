@@ -1,5 +1,6 @@
 import ast
 import os
+import sys
 import unittest
 from typing import Set
 
@@ -40,17 +41,20 @@ class TestFillOneLine(unittest.TestCase):
 
     def test_calls(self) -> None:
         result = self.file_results("calls.py")
+        python_version = sys.version_info[0:2]
 
-        self.assertEqual(len(result), 9)
+        self.assertEqual(len(result), 9 if python_version >= (3, 9) else 5)
         self.assertIn(f"2:1 {CALL_MSG} (28 <= 160)", result)
-        self.assertIn(f"7:1 {CALL_MSG} (84 <= 160)", result)
         self.assertIn(f"14:9 {CALL_MSG} (18 <= 160)", result)
-        self.assertIn(f"19:1 {ASSIGN_MSG} (28 <= 160)", result)
-        self.assertIn(f"32:1 {ASSIGN_MSG} (45 <= 160)", result)
-        self.assertIn(f"43:1 {CALL_MSG} (61 <= 160)", result)
         self.assertIn(f"51:5 {RETURN_MSG} (26 <= 160)", result)
         self.assertIn(f"57:5 {DEF_MSG} (37 <= 160)", result)
         self.assertIn(f"65:9 {RETURN_MSG} (64 <= 160)", result)
+
+        if python_version >= (3, 9):
+            self.assertIn(f"7:1 {CALL_MSG} (84 <= 160)", result)
+            self.assertIn(f"19:1 {ASSIGN_MSG} (28 <= 160)", result)
+            self.assertIn(f"32:1 {ASSIGN_MSG} (45 <= 160)", result)
+            self.assertIn(f"43:1 {CALL_MSG} (61 <= 160)", result)
 
     def test_definitions(self) -> None:
         result = self.file_results("definitions.py")
