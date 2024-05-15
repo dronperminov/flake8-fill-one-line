@@ -32,7 +32,7 @@ class DefAnalyzer:
         length += sum(args_lengths) + (len(args_lengths) - 1) * 2
 
         for i, default in enumerate(node.args.defaults):
-            offset = 1 if node.args.args[i].annotation is None else 3
+            offset = 1 if node.args.args[-(i + 1)].annotation is None else 3
             length += default.end_col_offset - default.col_offset + offset
 
         for i, default in enumerate(node.args.kw_defaults):

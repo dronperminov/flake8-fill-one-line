@@ -94,3 +94,13 @@ class D:
                  c="dewfhrihieh",
                  d: str = "dewoifhgroithiowjeirothiwrh123456789") -> None:
         pass
+
+
+class LineWithMeta:
+    pass
+
+
+class E:
+    def __make_line(self, line: str, line_type: str, header_level: int = 0, uid: str = None, filepath_hash: str = None,
+                    annotations: List = None) -> LineWithMeta:
+        pass
